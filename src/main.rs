@@ -383,10 +383,12 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                                 format!("Average NQ: {} Gil", data.average_price_nq as u64)
                                     .to_string(),
                             );
-                            optional_info.push(
-                                format!("Average HQ: {} Gil\n", data.average_price_hq as u64)
-                                    .to_string(),
-                            );
+                            if data.average_price_hq as u64 > 0 {
+                                optional_info.push(
+                                    format!("Average HQ: {} Gil\n", data.average_price_hq as u64)
+                                        .to_string(),
+                                );
+                            }
                             let mut hq_listings: Vec<Listing> =
                                 data.listings.clone().into_iter().filter(|l| l.hq).collect();
                             let mut nq_listings: Vec<Listing> = data
