@@ -1,0 +1,21 @@
+[package]
+name = "ffxiv-matrix-bot"
+version = "0.1.0"
+authors = ["Wasabi\\preston <1337paf92@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+matrix_bot_api = { git = "https://github.com/paftree/matrix_bot_api" }
+fractal-matrix-api = "4.2.0"
+reqwest = "0.9"
+config = "0.10.1"
+rand = "0.7.3"
+openssl = { version = "0.10", features = ["vendored"] }
+serde_derive = "1"
+xivapi = { git = "https://github.com/paftree/xivapi-rs" }
+url = "1.7.2"
+serde_json = "1"
+serde = "1"
+
