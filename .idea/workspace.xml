@@ -13,7 +13,11 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="" />
+    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,6 +63,7 @@
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+    <option name="version" value="2" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -81,6 +86,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1032" y="524" key="#Notifications" timestamp="1606987267807">
@@ -91,14 +97,18 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1039" y="502" key="#com.intellij.fileTypes.FileTypeChooser/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606882242754" />
+    <state x="1023" y="402" key="RollbackChangesDialog" timestamp="1606989824461">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1023" y="402" key="RollbackChangesDialog/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606989824461" />
     <state x="760" y="274" key="SettingsEditor" timestamp="1606987722232">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="760" y="274" key="SettingsEditor/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606987722232" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1606987701252">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1606989458049">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606987701252" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606989458049" />
     <state x="-2567" y="0" width="1294" height="1407" key="dock-window-1" timestamp="1606982443020">
       <screen x="-2560" y="0" width="2560" height="1400" />
     </state>

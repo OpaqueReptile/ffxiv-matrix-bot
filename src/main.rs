@@ -397,38 +397,42 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                                 .collect();
                             hq_listings.sort();
                             nq_listings.sort();
-                            optional_info.push(
-                                format!(
-                                    "Lowest NQ: {} Gil on {}",
-                                    nq_listings.first().unwrap().price_per_unit,
-                                    nq_listings.first().unwrap().world_name
-                                )
-                                .to_string(),
-                            );
-                            optional_info.push(
-                                format!(
-                                    "Highest NQ: {} Gil on {}\n",
-                                    nq_listings.last().unwrap().price_per_unit,
-                                    nq_listings.last().unwrap().world_name
-                                )
-                                .to_string(),
-                            );
-                            optional_info.push(
-                                format!(
-                                    "Lowest HQ: {} Gil on {}",
-                                    hq_listings.first().unwrap().price_per_unit,
-                                    hq_listings.first().unwrap().world_name
-                                )
-                                .to_string(),
-                            );
-                            optional_info.push(
-                                format!(
-                                    "Highest HQ: {} Gil on {}\n",
-                                    hq_listings.last().unwrap().price_per_unit,
-                                    hq_listings.last().unwrap().world_name
-                                )
-                                .to_string(),
-                            );
+                            if !nq_listings.is_empty() {
+                                optional_info.push(
+                                    format!(
+                                        "Lowest NQ: {} Gil on {}",
+                                        nq_listings.first().unwrap().price_per_unit,
+                                        nq_listings.first().unwrap().world_name
+                                    )
+                                        .to_string(),
+                                );
+                                optional_info.push(
+                                    format!(
+                                        "Highest NQ: {} Gil on {}\n",
+                                        nq_listings.last().unwrap().price_per_unit,
+                                        nq_listings.last().unwrap().world_name
+                                    )
+                                        .to_string(),
+                                );
+                            }
+                            if !hq_listings.is_empty() {
+                                optional_info.push(
+                                    format!(
+                                        "Lowest HQ: {} Gil on {}",
+                                        hq_listings.first().unwrap().price_per_unit,
+                                        hq_listings.first().unwrap().world_name
+                                    )
+                                        .to_string(),
+                                );
+                                optional_info.push(
+                                    format!(
+                                        "Highest HQ: {} Gil on {}\n",
+                                        hq_listings.last().unwrap().price_per_unit,
+                                        hq_listings.last().unwrap().world_name
+                                    )
+                                        .to_string(),
+                                );
+                            }
                             println!("optional_info: {:#?}", optional_info);
                             let mut info_msg = String::from("");
                             for info in optional_info {
