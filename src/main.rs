@@ -196,10 +196,10 @@ fn item_header_msg(
     let icon = item.other["Icon"].as_str().unwrap();
     let rarity_color = match item.other["Rarity"].as_u64().unwrap() {
         1 => None,
-        2 => Some("Green"),
-        3 => Some("DeepSkyBlue"),
-        4 => Some("DarkOrchid"),
-        _ => Some("Pink"),
+        2 => Some("#2ec685"), //Green, robinhoodish green
+        3 => Some("#5091BF"), //Blue
+        4 => Some("#ad5ad6"), //Purple, bit lighter than DarkOrchid
+        _ => Some("#FF91A0"), //Pink
     };
     //name and item picture
     let name_html = match rarity_color {
