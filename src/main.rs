@@ -402,7 +402,8 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                             if !nq_listings.is_empty() {
                                 optional_info.push(
                                     format!(
-                                        "Lowest NQ: {} Gil on {}",
+                                        "Lowest NQ: {}x {} Gil on {}",
+                                        nq_listings.first().unwrap().quantity,
                                         nq_listings.first().unwrap().price_per_unit,
                                         nq_listings.first().unwrap().world_name
                                     )
@@ -410,7 +411,8 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                                 );
                                 optional_info.push(
                                     format!(
-                                        "Highest NQ: {} Gil on {}\n",
+                                        "Highest NQ: {}x {} Gil on {}\n",
+                                        nq_listings.last().unwrap().quantity,
                                         nq_listings.last().unwrap().price_per_unit,
                                         nq_listings.last().unwrap().world_name
                                     )
@@ -420,7 +422,8 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                             if !hq_listings.is_empty() {
                                 optional_info.push(
                                     format!(
-                                        "Lowest HQ: {} Gil on {}",
+                                        "Lowest HQ: {}x {} Gil on {}",
+                                        hq_listings.first().unwrap().quantity,
                                         hq_listings.first().unwrap().price_per_unit,
                                         hq_listings.first().unwrap().world_name
                                     )
@@ -428,7 +431,8 @@ fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResul
                                 );
                                 optional_info.push(
                                     format!(
-                                        "Highest HQ: {} Gil on {}\n",
+                                        "Highest HQ: {}x {} Gil on {}\n",
+                                        hq_listings.last().unwrap().quantity,
                                         hq_listings.last().unwrap().price_per_unit,
                                         hq_listings.last().unwrap().world_name
                                     )
