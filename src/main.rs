@@ -307,6 +307,12 @@ fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
                 }
                 _ => (),
             };
+            match item.other.get("Description") {
+                Some(desc) => {
+                    optional_info.push(format!("{}", desc).to_string())
+                }
+                _ => (),
+            };
             println!("optional_info: {:#?}", optional_info);
             let mut info_msg = String::from("");
             for info in optional_info {
