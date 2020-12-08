@@ -1,11 +1,6 @@
 extern crate matrix_bot_api;
-use matrix_bot_api::handlers::{
-    HandleResult,
-    Message,
-    //MessageHandler,
-    StatelessHandler,
-};
-use matrix_bot_api::{ActiveBot, MatrixBot, MessageType};
+
+use matrix_bot_api::ActiveBot;
 
 extern crate fractal_matrix_api;
 use fractal_matrix_api::util::{media_url, put_media};
@@ -23,12 +18,11 @@ extern crate serde_json;
 use serde::{Deserialize, Serialize};
 
 //xivapi
-use xivapi::error::ApiError;
+
 use xivapi::models::content::Item;
-use xivapi::models::id::ItemId;
-use xivapi::models::search::StringAlgo::Fuzzy;
+
 use xivapi::{
-    models::search::{SearchModel, SearchResult},
+    models::search::SearchResult,
     //models::character::{Race, Gender},
     //models::content::Item{}
     prelude::*,
@@ -59,7 +53,7 @@ pub struct Listing {
     pub hq: bool,
 }
 
-trait JobClassId {
+pub trait JobClassId {
     fn to_jobclassid(&self) -> Result<&str, xivapi::error::ApiError>;
 }
 
@@ -148,7 +142,6 @@ pub fn upload_file(
         Ok(js) => Ok(js["content_uri"].as_str().unwrap_or_default().to_string()),
     }
 }
-
 
 fn _xivapi_test() -> String {
     let api = XivApi::default();

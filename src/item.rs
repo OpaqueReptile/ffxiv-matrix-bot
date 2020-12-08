@@ -1,17 +1,10 @@
 extern crate matrix_bot_api;
-use matrix_bot_api::handlers::{
-    HandleResult,
-    Message,
-    //MessageHandler,
-    StatelessHandler,
-};
-use matrix_bot_api::{ActiveBot, MatrixBot, MessageType};
+use matrix_bot_api::handlers::{HandleResult, Message};
+use matrix_bot_api::{ActiveBot, MessageType};
 
 extern crate fractal_matrix_api;
-use fractal_matrix_api::util::{media_url, put_media};
 
 extern crate reqwest;
-use url::Url;
 
 // Just used for loading the username, password and homeserverurl from a file.
 extern crate config;
@@ -20,64 +13,16 @@ extern crate rand;
 
 extern crate serde;
 extern crate serde_json;
-use serde::{Deserialize, Serialize};
 
 //xivapi
 use xivapi::error::ApiError;
-use xivapi::models::content::Item;
+
 use xivapi::models::id::ItemId;
 use xivapi::models::search::StringAlgo::Fuzzy;
-use xivapi::{
-    models::search::{SearchModel, SearchResult},
-    //models::character::{Race, Gender},
-    //models::content::Item{}
-    prelude::*,
-};
+use xivapi::{models::search::SearchModel, prelude::*};
 
 use crate::util::*;
 
-fn item_header_msg(
-    bot: &ActiveBot,
-    item: &Item,
-) -> Result<String, fractal_matrix_api::error::Error> {
-    let mut settings = config::Config::default();
-    settings
-        .merge(config::File::with_name("botconfig"))
-        .unwrap();
-    let name = item.other["Name"].as_str().unwrap();
-    let icon = item.other["Icon"].as_str().unwrap();
-    let rarity_color = match item.other["Rarity"].as_u64().unwrap() {
-        1 => None,
-        2 => Some("#2ec685"), //Green, robinhoodish green
-        3 => Some("#5091BF"), //Blue
-        4 => Some("#ad5ad6"), //Purple, bit lighter than DarkOrchid
-        _ => Some("#FF91A0"), //Pink
-    };
-    //name and item picture
-    let name_html = match rarity_color {
-        Some(color) => format!("<font color=\"{}\">{}</font>", color, name),
-        _ => format!("{}", name),
-    };
-    let mut buf: Vec<u8> = vec![];
-    reqwest::get(format!("https://xivapi.com{}", icon).as_str())
-        .expect("request failed")
-        .copy_to(&mut buf)
-        .unwrap();
-    match upload_file(
-        bot.get_tk().as_str(),
-        &Url::parse(settings.get_str("homeserver_url").unwrap().as_str()).unwrap(),
-        buf,
-    ) {
-        Ok(mxc) => {
-            println!("mxc for image is: {}", mxc);
-            Ok(format!("<img style=\"vertical-align:middle\" src=\"{}\" alt=\"\" title=\"\" vertical-align=\"middle\" /><br>{}", mxc, name_html))
-        }
-        Err(e) => {
-            println!("Unable to upload thumbnail");
-            Err(e)
-        }
-    }
-}
 // Item Name (Color by rarity)
 // Materia Slots <MateriaSlotCount>
 pub fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
@@ -160,9 +105,7 @@ pub fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
                 _ => (),
             };
             match item.other.get("Description") {
-                Some(desc) => {
-                    optional_info.push(format!("{}", desc).to_string())
-                }
+                Some(desc) => optional_info.push(format!("{}", desc).to_string()),
                 _ => (),
             };
             println!("optional_info: {:#?}", optional_info);
@@ -270,7 +213,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                         nq_listings.first().unwrap().price_per_unit,
                                         nq_listings.first().unwrap().world_name
                                     )
-                                        .to_string(),
+                                    .to_string(),
                                 );
                                 optional_info.push(
                                     format!(
@@ -279,7 +222,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                         nq_listings.last().unwrap().price_per_unit,
                                         nq_listings.last().unwrap().world_name
                                     )
-                                        .to_string(),
+                                    .to_string(),
                                 );
                             }
                             if !hq_listings.is_empty() {
@@ -290,7 +233,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                         hq_listings.first().unwrap().price_per_unit,
                                         hq_listings.first().unwrap().world_name
                                     )
-                                        .to_string(),
+                                    .to_string(),
                                 );
                                 optional_info.push(
                                     format!(
@@ -299,7 +242,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                         hq_listings.last().unwrap().price_per_unit,
                                         hq_listings.last().unwrap().world_name
                                     )
-                                        .to_string(),
+                                    .to_string(),
                                 );
                             }
                             println!("optional_info: {:#?}", optional_info);

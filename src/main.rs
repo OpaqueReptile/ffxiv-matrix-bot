@@ -1,17 +1,10 @@
 extern crate matrix_bot_api;
-use matrix_bot_api::handlers::{
-    HandleResult,
-    Message,
-    //MessageHandler,
-    StatelessHandler,
-};
-use matrix_bot_api::{ActiveBot, MatrixBot, MessageType};
+use matrix_bot_api::handlers::StatelessHandler;
+use matrix_bot_api::MatrixBot;
 
 extern crate fractal_matrix_api;
-use fractal_matrix_api::util::{media_url, put_media};
 
 extern crate reqwest;
-use url::Url;
 
 // Just used for loading the username, password and homeserverurl from a file.
 extern crate config;
@@ -20,25 +13,14 @@ extern crate rand;
 
 extern crate serde;
 extern crate serde_json;
-use serde::{Deserialize, Serialize};
 
 //xivapi
-use xivapi::error::ApiError;
-use xivapi::models;
-use xivapi::models::search::StringAlgo::Fuzzy;
-use xivapi::{
-    models::search::{SearchModel, SearchResult},
-    //models::character::{Race, Gender},
-    //models::content::Item{}
-    prelude::*,
-};
 
 //load submodules
 mod item;
-mod job;
+mod party;
 mod random;
 mod util;
-
 
 #[allow(unused_doc_comments)]
 fn main() {
@@ -90,7 +72,6 @@ fn main() {
         HandleResult::StopHandling
     });
     **/
-
     let mut ffxiv_handle = StatelessHandler::new();
     ffxiv_handle.register_handle("item", item::get_item);
     ffxiv_handle.register_handle("marketboard", item::get_marketboard);
@@ -98,8 +79,6 @@ fn main() {
     ffxiv_handle.register_handle("market", item::get_marketboard);
     ffxiv_handle.register_handle("roll", random::roll_dice);
     ffxiv_handle.register_handle("help", random::roll_help);
-    ffxiv_handle.set_cmd_prefix("mog ");
-
 
     // -------------------------------------------------------
     // Start the bot

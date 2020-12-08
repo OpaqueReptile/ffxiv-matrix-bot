@@ -13,8 +13,17 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="Hex colors">
+    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="breaking things up into modules">
+      <change afterPath="$PROJECT_DIR$/rustfmtl.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/party.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/item.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/item.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/job.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/random.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/random.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/util.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +102,28 @@
       <option name="project" value="LOCAL" />
       <updated>1607016795606</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="List quantity for mb">
+      <created>1607225050661</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1607225050661</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Print description">
+      <created>1607331081723</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1607331081723</updated>
+    </task>
+    <task id="LOCAL-00006" summary="breaking things up into modules">
+      <created>1607400732209</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1607400732209</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,7 +142,10 @@
     <MESSAGE value="check for if hq and nq listings are empty" />
     <MESSAGE value="Don't print if HQ is 0" />
     <MESSAGE value="Hex colors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hex colors" />
+    <MESSAGE value="List quantity for mb" />
+    <MESSAGE value="Print description" />
+    <MESSAGE value="breaking things up into modules" />
+    <option name="LAST_COMMIT_MESSAGE" value="breaking things up into modules" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1032" y="524" key="#Notifications" timestamp="1606987267807">
@@ -131,10 +164,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="760" y="274" key="SettingsEditor/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606987722232" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1607016811960">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="3432" y="433" key="Vcs.Push.Dialog.v2" timestamp="1607331091838">
+      <screen x="2560" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1607016811960" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1607225058325" />
+    <state x="3432" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@2560.0.2560.1400" timestamp="1607331091838" />
     <state x="-2567" y="0" width="1294" height="1407" key="dock-window-1" timestamp="1606982443020">
       <screen x="-2560" y="0" width="2560" height="1400" />
     </state>
