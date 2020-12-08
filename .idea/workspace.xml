@@ -13,8 +13,8 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="do things in the right order duh">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="1325aba0-1205-4a53-857e-d8e13af8a6bb" name="Default Changelist" comment="pull from api">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/party.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/party.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607405400022</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="pull from api">
+      <created>1607405768012</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1607405768012</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -176,7 +183,8 @@
     <MESSAGE value="add register handle to bot" />
     <MESSAGE value="trim whitespace" />
     <MESSAGE value="do things in the right order duh" />
-    <option name="LAST_COMMIT_MESSAGE" value="do things in the right order duh" />
+    <MESSAGE value="pull from api" />
+    <option name="LAST_COMMIT_MESSAGE" value="pull from api" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1032" y="524" key="#Notifications" timestamp="1606987267807">
@@ -195,10 +203,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="760" y="274" key="SettingsEditor/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1606987722232" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1607405412959">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1607405802352">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1607405412959" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@0.0.2560.1400" timestamp="1607405802352" />
     <state x="3432" y="433" key="Vcs.Push.Dialog.v2/2560.0.2560.1400/-2560.0.2560.1400/0.0.2560.1400@2560.0.2560.1400" timestamp="1607331091838" />
     <state x="-2567" y="0" width="1294" height="1407" key="dock-window-1" timestamp="1606982443020">
       <screen x="-2560" y="0" width="2560" height="1400" />
