@@ -79,6 +79,7 @@ fn main() {
     ffxiv_handle.register_handle("market", item::get_marketboard);
     ffxiv_handle.register_handle("roll", random::roll_dice);
     ffxiv_handle.register_handle("help", random::roll_help);
+    ffxiv_handle.register_handle("register", party::register_character);
 
     // -------------------------------------------------------
     // Start the bot
