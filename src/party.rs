@@ -11,6 +11,7 @@ use matrix_bot_api::handlers::HandleResult;
 use matrix_bot_api::{ActiveBot, Message, MessageType};
 use xivapi::XivApi;
 use xivapi::models::id::CharacterId;
+use xivapi::builder::Builder;
 
 static DBNAME: &str = "party.db";
 
@@ -36,7 +37,7 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
         }
     };
     //get lodestone data
-    let character = api.character(CharacterId(id));
+    let mut character = api.character(CharacterId(id)).send();
     println!{"{:#?}",character}
 
     HandleResult::StopHandling
