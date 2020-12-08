@@ -31,6 +31,7 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
                 room,
                 MessageType::TextMessage,
             );
+            println!{"{:#?}",e};
             return HandleResult::StopHandling;
         }
     };
