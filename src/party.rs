@@ -20,7 +20,7 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
     let api = XivApi::default();
     let room = &message.room;
     let user = &message.sender;
-    let id  = match cmd.parse().trim_start_matches(" ").trim_end_matches(" ") {
+    let id  = match cmd.trim_start_matches(" ").trim_end_matches(" ").parse() {
         Ok(id) => id,
         Err(e) => {
             bot.send_message(&format!("{} is an invalid character ID, kupo!",
