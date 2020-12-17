@@ -22,6 +22,7 @@ use xivapi::models::search::StringAlgo::Fuzzy;
 use xivapi::{models::search::SearchModel, prelude::*};
 
 use crate::util::*;
+use regex::Regex;
 
 // Item Name (Color by rarity)
 // Materia Slots <MateriaSlotCount>
@@ -105,7 +106,12 @@ pub fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
                 _ => (),
             };
             match item.other.get("Description") {
-                Some(desc) => optional_info.push(format!("{}", desc).to_string()),
+                Some(desc) => optional_info.push(
+                    Regex::new(r"\n+")
+                        .unwrap()
+                        .replace(desc.as_str().unwrap(), "\n")
+                        .to_string(),
+                ),
                 _ => (),
             };
             println!("optional_info: {:#?}", optional_info);

@@ -1,17 +1,17 @@
-extern crate matrix_bot_api;
-extern crate fractal_matrix_api;
-extern crate reqwest;
 extern crate config;
+extern crate fractal_matrix_api;
+extern crate matrix_bot_api;
 extern crate rand;
+extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
 extern crate sled;
 
 use matrix_bot_api::handlers::HandleResult;
 use matrix_bot_api::{ActiveBot, Message, MessageType};
-use xivapi::XivApi;
-use xivapi::models::id::CharacterId;
 use xivapi::builder::Builder;
+use xivapi::models::id::CharacterId;
+use xivapi::XivApi;
 
 static DBNAME: &str = "party.db";
 
@@ -21,10 +21,12 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
     let api = XivApi::default();
     let room = &message.room;
     let user = &message.sender;
-    let id  = match cmd.trim_start_matches(" ").trim_end_matches(" ").parse() {
+    let id = match cmd.trim_start_matches(" ").trim_end_matches(" ").parse() {
         Ok(id) => id,
         Err(e) => {
-            bot.send_message(&format!("{} is an invalid character ID, kupo!",
+            bot.send_message(
+                &format!(
+                    "{} is an invalid character ID, kupo!",
                     cmd.to_string()
                         .trim_start_matches(" ")
                         .trim_end_matches(" ")
@@ -32,25 +34,25 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
                 room,
                 MessageType::TextMessage,
             );
-            println!{"{:#?}",e};
+            println! {"{:#?}",e};
             return HandleResult::StopHandling;
         }
     };
     //get lodestone data
     let mut character = api.character(CharacterId(id)).send();
-    println!{"{:#?}",character}
+    println! {"{:#?}",character}
 
     HandleResult::StopHandling
 }
 
 pub fn join_party(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     //join/create party, optional argument for party id
-HandleResult::StopHandling
+    HandleResult::StopHandling
 }
 
 pub fn leave_party(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     //remove user from party, optional argument for party id
-HandleResult::StopHandling
+    HandleResult::StopHandling
 }
 
 pub fn delete_party(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
