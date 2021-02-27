@@ -14,6 +14,12 @@ extern crate rand;
 extern crate serde;
 extern crate serde_json;
 
+extern crate clap;
+extern crate inflector;
+
+use clap::{App, AppSettings, Arg, SubCommand};
+use inflector::Inflector;
+
 //xivapi
 use xivapi::error::ApiError;
 
@@ -179,117 +185,162 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
     let api = XivApi::default();
     let room = &message.room;
     let _cmd_split = cmd.split_whitespace();
-    let mut _results: Vec<u32> = vec![];
-    match xivapi_find_id(cmd.to_string()) {
-        Ok(id) => {
-            let item = api.item(id).send().unwrap();
-            let name = item.other["Name"].as_str().unwrap();
-            let name_html = item_header_msg(bot, &item).unwrap();
-            match reqwest::get(format!("https://universalis.app/api/Aether/{}", id.0).as_str()) {
-                Ok(mut res) => {
-                    match serde_json::from_str(res.text().unwrap().as_str()) {
-                        Ok(d) => {
-                            let data: MarketData = d;
-                            let mut optional_info = vec![];
-                            optional_info.push(
-                                format!("Average NQ: {} Gil", data.average_price_nq as u64)
-                                    .to_string(),
-                            );
-                            if data.average_price_hq as u64 > 0 {
-                                optional_info.push(
-                                    format!("Average HQ: {} Gil\n", data.average_price_hq as u64)
-                                        .to_string(),
-                                );
-                            }
-                            let mut hq_listings: Vec<Listing> =
-                                data.listings.clone().into_iter().filter(|l| l.hq).collect();
-                            let mut nq_listings: Vec<Listing> = data
-                                .listings
-                                .clone()
-                                .into_iter()
-                                .filter(|l| !l.hq)
-                                .collect();
-                            hq_listings.sort();
-                            nq_listings.sort();
-                            if !nq_listings.is_empty() {
-                                optional_info.push(
-                                    format!(
-                                        "Lowest NQ: {}x {} Gil on {}",
-                                        nq_listings.first().unwrap().quantity,
-                                        nq_listings.first().unwrap().price_per_unit,
-                                        nq_listings.first().unwrap().world_name
-                                    )
-                                    .to_string(),
-                                );
-                                optional_info.push(
-                                    format!(
-                                        "Highest NQ: {}x {} Gil on {}\n",
-                                        nq_listings.last().unwrap().quantity,
-                                        nq_listings.last().unwrap().price_per_unit,
-                                        nq_listings.last().unwrap().world_name
-                                    )
-                                    .to_string(),
-                                );
-                            }
-                            if !hq_listings.is_empty() {
-                                optional_info.push(
-                                    format!(
-                                        "Lowest HQ: {}x {} Gil on {}",
-                                        hq_listings.first().unwrap().quantity,
-                                        hq_listings.first().unwrap().price_per_unit,
-                                        hq_listings.first().unwrap().world_name
-                                    )
-                                    .to_string(),
-                                );
-                                optional_info.push(
-                                    format!(
-                                        "Highest HQ: {}x {} Gil on {}\n",
-                                        hq_listings.last().unwrap().quantity,
-                                        hq_listings.last().unwrap().price_per_unit,
-                                        hq_listings.last().unwrap().world_name
-                                    )
-                                    .to_string(),
-                                );
-                            }
-                            println!("optional_info: {:#?}", optional_info);
-                            let mut info_msg = String::from("");
-                            for info in optional_info {
-                                info_msg = format!("{}{}\n", info_msg, info);
-                            }
+    // if a -world command is given parse it out
+    match App::new("!mb")
+        .setting(AppSettings::TrailingVarArg)
+        .setting(AppSettings::NoBinaryName)
+        .arg(
+            Arg::with_name("datacenter")
+                .possible_values(&["Aether", "Primal", "Crystal"])
+                .case_insensitive(true)
+                .short("d")
+                .long("datacenter")
+                .takes_value(true)
+                .default_value("Aether"),
+        )
+        .arg(
+            Arg::with_name("inputs")
+                .multiple(true)
+                .allow_hyphen_values(true),
+        )
+        .get_matches_from_safe(_cmd_split)
+    {
+        Ok(matches) => {
+            let data_center = matches.value_of("datacenter").unwrap().to_title_case();
+            let item_vec: Vec<&str> = matches.values_of("inputs").unwrap().collect();
+            println!("{} on {}", item_vec.join(" "), data_center);
+            let mut _results: Vec<u32> = vec![];
+            match xivapi_find_id(item_vec.join(" ").to_string()) {
+                Ok(id) => {
+                    println!("id: {}", id.0);
+                    let item = api.item(id).send().unwrap();
+                    let name = item.other["Name"].as_str().unwrap();
+                    let name_html = item_header_msg(bot, &item).unwrap();
+                    match reqwest::get(
+                        format!("https://universalis.app/api/{}/{}", data_center, id.0).as_str(),
+                    ) {
+                        Ok(mut res) => {
+                            match serde_json::from_str(res.text().unwrap().as_str()) {
+                                Ok(d) => {
+                                    let data: MarketData = d;
+                                    let mut optional_info = vec![];
+                                    optional_info.push(
+                                        format!("Average NQ: {} Gil", data.average_price_nq as u64)
+                                            .to_string(),
+                                    );
+                                    if data.average_price_hq as u64 > 0 {
+                                        optional_info.push(
+                                            format!(
+                                                "Average HQ: {} Gil\n",
+                                                data.average_price_hq as u64
+                                            )
+                                            .to_string(),
+                                        );
+                                    }
+                                    let mut hq_listings: Vec<Listing> = data
+                                        .listings
+                                        .clone()
+                                        .into_iter()
+                                        .filter(|l| l.hq)
+                                        .collect();
+                                    let mut nq_listings: Vec<Listing> = data
+                                        .listings
+                                        .clone()
+                                        .into_iter()
+                                        .filter(|l| !l.hq)
+                                        .collect();
+                                    hq_listings.sort();
+                                    nq_listings.sort();
+                                    if !nq_listings.is_empty() {
+                                        optional_info.push(
+                                            format!(
+                                                "Lowest NQ: {}x {} Gil on {}",
+                                                nq_listings.first().unwrap().quantity,
+                                                nq_listings.first().unwrap().price_per_unit,
+                                                nq_listings.first().unwrap().world_name
+                                            )
+                                            .to_string(),
+                                        );
+                                        optional_info.push(
+                                            format!(
+                                                "Highest NQ: {}x {} Gil on {}\n",
+                                                nq_listings.last().unwrap().quantity,
+                                                nq_listings.last().unwrap().price_per_unit,
+                                                nq_listings.last().unwrap().world_name
+                                            )
+                                            .to_string(),
+                                        );
+                                    }
+                                    if !hq_listings.is_empty() {
+                                        optional_info.push(
+                                            format!(
+                                                "Lowest HQ: {}x {} Gil on {}",
+                                                hq_listings.first().unwrap().quantity,
+                                                hq_listings.first().unwrap().price_per_unit,
+                                                hq_listings.first().unwrap().world_name
+                                            )
+                                            .to_string(),
+                                        );
+                                        optional_info.push(
+                                            format!(
+                                                "Highest HQ: {}x {} Gil on {}\n",
+                                                hq_listings.last().unwrap().quantity,
+                                                hq_listings.last().unwrap().price_per_unit,
+                                                hq_listings.last().unwrap().world_name
+                                            )
+                                            .to_string(),
+                                        );
+                                    }
+                                    println!("optional_info: {:#?}", optional_info);
+                                    let mut info_msg = String::from("");
+                                    for info in optional_info {
+                                        info_msg = format!("{}{}\n", info_msg, info);
+                                    }
 
-                            let greeting =
-                                format!("Here's how the markets look for {}, kupo!", name);
-                            let final_msg = format!("{}\n\n{}\n\n{}", greeting, name, info_msg);
-                            let final_html_msg = format!(
-                                "{}<br><br>{}<br><br>{}",
-                                greeting,
-                                name_html,
-                                info_msg.replace("\n", "<br>")
-                            );
-                            bot.send_html_message(
-                                &final_msg,
-                                &final_html_msg,
-                                room,
-                                MessageType::TextMessage,
-                            )
+                                    let greeting = format!(
+                                        "Here's the {} market info for {}, kupo!",
+                                        data_center, name
+                                    );
+                                    let final_msg =
+                                        format!("{}\n\n{}\n\n{}", greeting, name, info_msg);
+                                    let final_html_msg = format!(
+                                        "{}<br><br>{}<br><br>{}",
+                                        greeting,
+                                        name_html,
+                                        info_msg.replace("\n", "<br>")
+                                    );
+                                    bot.send_html_message(
+                                        &final_msg,
+                                        &final_html_msg,
+                                        room,
+                                        MessageType::TextMessage,
+                                    )
+                                }
+                                Err(_) => bot.send_message(
+                                    &format!(
+                                        "Doesn't look like {} is for sale, kupo!",
+                                        name.to_string()
+                                    ),
+                                    room,
+                                    MessageType::TextMessage,
+                                ),
+                            };
                         }
-                        Err(_) => bot.send_message(
-                            &format!("Doesn't look like {} is for sale, kupo!", name.to_string()),
-                            room,
-                            MessageType::TextMessage,
-                        ),
-                    };
+                        _ => (),
+                    }
                 }
-                _ => (),
-            }
+                Err(_) => bot.send_message(
+                    &format!(
+                        "Unable to find an item called {}, kupo!",
+                        item_vec.join(" ").to_string()
+                    ),
+                    room,
+                    MessageType::TextMessage,
+                ),
+            };
         }
         Err(_) => bot.send_message(
-            &format!(
-                "Unable to find an item called {}, kupo!",
-                cmd.to_string()
-                    .trim_start_matches(" ")
-                    .trim_end_matches(" ")
-            ),
+            &format!("I'm confused, kupo!"),
             room,
             MessageType::TextMessage,
         ),
