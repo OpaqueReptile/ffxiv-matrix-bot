@@ -207,7 +207,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
     {
         Ok(matches) => {
             let data_center = matches.value_of("datacenter").unwrap().to_title_case();
-            let item_vec: Vec<&str> = matches.values_of("inputs").unwrap().collect();
+            let item_vec: Vec<&str> = matches.values_of("inputs").unwrap_or_default().collect();
             println!("{} on {}", item_vec.join(" "), data_center);
             let mut _results: Vec<u32> = vec![];
             match xivapi_find_id(item_vec.join(" ").to_string()) {
