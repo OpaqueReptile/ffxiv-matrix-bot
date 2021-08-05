@@ -14,54 +14,53 @@ extern crate rand;
 extern crate serde;
 extern crate serde_json;
 
+extern crate chrono;
+use chrono::TimeZone;
+use chrono::prelude::*;
+use chrono::Duration;
+
+
 //xivapi
 
-pub(crate) fn roll_help(bot: &ActiveBot, message: &Message, _cmd: &str) -> HandleResult {
-    let mut help = "Roll dice:\n".to_string();
-    help += "!roll X [X ..]\n";
-    help += "with\n";
-    help += "X = some number. Thats the number of eyes your die will have.\n";
-    help += "If multpile numbers are given, multiple dice are rolled. The result as a sum is displayed as well.\n";
-    help += "\nExample: !roll 6 12 => Rolls 2 dice, one with 6, the other with 12 eyes.\n";
-    bot.send_message(&help, &message.room, MessageType::RoomNotice);
-    HandleResult::ContinueHandling /* There might be more handlers that implement "help" */
-}
-
-pub(crate) fn roll_dice(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
+pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
-    let cmd_split = cmd.split_whitespace();
-
-    let mut results: Vec<u32> = vec![];
-    for dice in cmd_split {
-        let sides = match dice.parse::<u32>() {
-            Ok(x) => x,
+    let mut msg:String;
+    //let cmd_split = cmd.split_whitespace();
+    //for target_str in cmd_split {
+        //match target_str.parse::<u32>() {
+            //Ok(target_epoch) => {
+                //let target_dt = Utc.timestamp(target_epoch, 0);
+                let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(8, 0, 0);
+                let now_dt: DateTime<Utc> = Utc::now();
+                let time_left = target_dt - now_dt;
+                if time_left.num_weeks() > 3 {
+                    msg = format!("There are {} weeks until Endwalker begins early access, kupo!", time_left.num_weeks());
+                } else if time_left.num_days() > 3 {
+                    msg = format!("There are {} days until Endwalker begins early access, kupo!!", time_left.num_days());
+                } else if time_left.num_hours() > 1 {
+                    msg = format!("There are {} hours until Endwalker begins early access, kupo!!!", time_left.num_hours());
+                } else if time_left.num_minutes() > 1 {
+                    msg = format!("There are {} minutes until Endwalker begins early access, kupo!!! 🌕👀", time_left.num_minutes());
+                } else if time_left.num_seconds() > 1 {
+                    msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀", time_left.num_seconds());
+                } else {
+                    msg = format!("Enwalker is here, kupo! 🎉");
+                }
+                bot.send_message(
+                    &msg,
+                    room,
+                    MessageType::RoomNotice,
+                );
+           /** }
             Err(_) => {
                 bot.send_message(
-                    &format!("{} is not a number.", dice),
+                    &format!("{} is not a valid unix epoch time, kupo!", dice),
                     room,
                     MessageType::RoomNotice,
                 );
                 return HandleResult::StopHandling;
             }
-        };
-        results.push((rand::random::<u32>() % sides) + 1);
-    }
-
-    if results.len() == 0 {
-        return roll_help(bot, message, cmd);
-    }
-
-    if results.len() == 1 {
-        bot.send_message(&format!("{}", results[0]), room, MessageType::RoomNotice);
-    } else {
-        // make string from results:
-        let str_res: Vec<String> = results.iter().map(|x| x.to_string()).collect();
-        bot.send_message(
-            &format!("{} = {}", str_res.join(" + "), results.iter().sum::<u32>()),
-            room,
-            MessageType::RoomNotice,
-        );
-    }
-
+        };**/
+   // }
     HandleResult::StopHandling
 }
