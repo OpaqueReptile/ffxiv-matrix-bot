@@ -30,13 +30,13 @@ fn countdown_message() -> String {
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
     if time_left.num_weeks() > 3 {
-        msg = format!("There are {} weeks until Endwalker begins early access, kupo!", time_left.num_weeks());
+        msg = format!("There are {} weeks until Endwalker early access, kupo!", time_left.num_weeks());
     } else if time_left.num_days() > 3 {
-        msg = format!("There are {} days until Endwalker begins early access, kupo!!", time_left.num_days());
+        msg = format!("There are {} days until Endwalker early access, kupo!!", time_left.num_days());
     } else if time_left.num_hours() > 1 {
-        msg = format!("There are {} hours until Endwalker begins early access, kupo!!!", time_left.num_hours());
+        msg = format!("There are {} hours until Endwalker early access, kupo!!!", time_left.num_hours());
     } else if time_left.num_minutes() > 1 {
-        msg = format!("There are {} minutes until Endwalker begins early access, kupo!!! 🌕👀", time_left.num_minutes());
+        msg = format!("There are {} minutes until Endwalker early access, kupo!!! 🌕👀", time_left.num_minutes());
     } else if time_left.num_seconds() > 1 {
         msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀", time_left.num_seconds());
     } else {
