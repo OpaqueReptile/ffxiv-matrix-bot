@@ -19,35 +19,63 @@ use chrono::TimeZone;
 use chrono::prelude::*;
 use chrono::Duration;
 
+use std::thread;
+
 
 //xivapi
 
+fn countdown_message() -> String {
+    let msg:String;
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(8, 0, 0);
+    let now_dt: DateTime<Utc> = Utc::now();
+    let time_left = target_dt - now_dt;
+    if time_left.num_weeks() > 3 {
+        msg = format!("There are {} weeks until Endwalker begins early access, kupo!", time_left.num_weeks());
+    } else if time_left.num_days() > 3 {
+        msg = format!("There are {} days until Endwalker begins early access, kupo!!", time_left.num_days());
+    } else if time_left.num_hours() > 1 {
+        msg = format!("There are {} hours until Endwalker begins early access, kupo!!!", time_left.num_hours());
+    } else if time_left.num_minutes() > 1 {
+        msg = format!("There are {} minutes until Endwalker begins early access, kupo!!! 🌕👀", time_left.num_minutes());
+    } else if time_left.num_seconds() > 1 {
+        msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀", time_left.num_seconds());
+    } else {
+        msg = format!("Enwalker is here, kupo! 🎉");
+    }
+    msg
+}
+
+pub(crate) fn countdown_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
+    let room = &message.room;
+    let mut t0 = String::from("");
+    loop {
+        let now = countdown_message().clone();
+        if t0.as_str().ne(now.as_str()) {
+            bot.send_message(
+                &countdown_message(),
+                room,
+                MessageType::RoomNotice,
+            );
+            t0 = countdown_message().clone();
+        }
+        println!("{}",countdown_message().as_str());
+        thread::sleep(std::time::Duration::from_millis(15_000)); // sleep 15s
+    }
+    HandleResult::StopHandling
+}
+
+
 pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
-    let mut msg:String;
+    //let mut msg:String;
     //let cmd_split = cmd.split_whitespace();
     //for target_str in cmd_split {
         //match target_str.parse::<u32>() {
             //Ok(target_epoch) => {
                 //let target_dt = Utc.timestamp(target_epoch, 0);
-                let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(8, 0, 0);
-                let now_dt: DateTime<Utc> = Utc::now();
-                let time_left = target_dt - now_dt;
-                if time_left.num_weeks() > 3 {
-                    msg = format!("There are {} weeks until Endwalker begins early access, kupo!", time_left.num_weeks());
-                } else if time_left.num_days() > 3 {
-                    msg = format!("There are {} days until Endwalker begins early access, kupo!!", time_left.num_days());
-                } else if time_left.num_hours() > 1 {
-                    msg = format!("There are {} hours until Endwalker begins early access, kupo!!!", time_left.num_hours());
-                } else if time_left.num_minutes() > 1 {
-                    msg = format!("There are {} minutes until Endwalker begins early access, kupo!!! 🌕👀", time_left.num_minutes());
-                } else if time_left.num_seconds() > 1 {
-                    msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀", time_left.num_seconds());
-                } else {
-                    msg = format!("Enwalker is here, kupo! 🎉");
-                }
+
                 bot.send_message(
-                    &msg,
+                    &countdown_message(),
                     room,
                     MessageType::RoomNotice,
                 );
