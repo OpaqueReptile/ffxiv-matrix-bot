@@ -40,7 +40,7 @@ fn countdown_message() -> String {
     } else if time_left.num_seconds() > 1 {
         msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀", time_left.num_seconds());
     } else {
-        msg = format!("Enwalker is here, kupo! 🎉");
+        msg = format!("Endwalker is here, kupo! 🎉");
     }
     msg
 }
