@@ -26,12 +26,12 @@ use std::thread;
 
 fn countdown_message() -> String {
     let msg:String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(8, 0, 0);
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
-    if time_left.num_weeks() > 3 {
+    if time_left.num_weeks() > 5 {
         msg = format!("There are {} weeks until Endwalker early access, kupo!", time_left.num_weeks());
-    } else if time_left.num_days() > 3 {
+    } else if time_left.num_days() > 2 {
         msg = format!("There are {} days until Endwalker early access, kupo!!", time_left.num_days());
     } else if time_left.num_hours() > 1 {
         msg = format!("There are {} hours until Endwalker early access, kupo!!!", time_left.num_hours());
