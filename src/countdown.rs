@@ -78,6 +78,15 @@ fn detailed_countdown_message() -> String {
     msg
 }
 
+fn countdown_nano_message() -> String {
+    let msg:String;
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
+    let now_dt: DateTime<Utc> = Utc::now();
+    let time_left = target_dt - now_dt;
+    msg = format!("Only {} nanoseconds to go until blastoff, kupo! 🚀", time_left.num_nanoseconds().unwrap());
+    msg
+}
+
 pub(crate) fn countdown_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
     let mut t0 = String::from("");
@@ -94,6 +103,34 @@ pub(crate) fn countdown_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> H
         println!("{}",countdown_message().as_str());
         thread::sleep(std::time::Duration::from_millis(15_000)); // sleep 15s
     }
+    HandleResult::StopHandling
+}
+
+pub(crate) fn countdown_nano(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
+    let room = &message.room;
+    //let mut msg:String;
+    //let cmd_split = cmd.split_whitespace();
+    //for target_str in cmd_split {
+    //match target_str.parse::<u32>() {
+    //Ok(target_epoch) => {
+    //let target_dt = Utc.timestamp(target_epoch, 0);
+
+    bot.send_message(
+        &countdown_nano_message(),
+        room,
+        MessageType::RoomNotice,
+    );
+    /** }
+               Err(_) => {
+                   bot.send_message(
+                       &format!("{} is not a valid unix epoch time, kupo!", dice),
+                       room,
+                       MessageType::RoomNotice,
+                   );
+                   return HandleResult::StopHandling;
+               }
+           };**/
+    // }
     HandleResult::StopHandling
 }
 
