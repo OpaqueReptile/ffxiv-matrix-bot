@@ -45,6 +45,27 @@ fn countdown_message() -> String {
     msg
 }
 
+fn detailed_countdown_message() -> String {
+    let msg:String;
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
+    let now_dt: DateTime<Utc> = Utc::now();
+    let time_left = target_dt - now_dt;
+    if time_left.num_weeks() > 5 {
+        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo! 🚀", time_left.num_weeks(), time_left.num_days(), time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+    } else if time_left.num_days() > 2 {
+        msg = format!("There are {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!! 🚀", time_left.num_days(), time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+    } else if time_left.num_hours() > 1 {
+        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+    } else if time_left.num_minutes() > 1 {
+        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", time_left.num_minutes(), time_left.num_seconds());
+    } else if time_left.num_seconds() > 1 {
+        msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🚀", time_left.num_seconds());
+    } else {
+        msg = format!("Endwalker is here, kupo! 🎉🚀");
+    }
+    msg
+}
+
 pub(crate) fn countdown_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
     let mut t0 = String::from("");
@@ -75,7 +96,7 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
                 //let target_dt = Utc.timestamp(target_epoch, 0);
 
                 bot.send_message(
-                    &countdown_message(),
+                    &detailed_countdown_message(),
                     room,
                     MessageType::RoomNotice,
                 );
@@ -92,3 +113,5 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
    // }
     HandleResult::StopHandling
 }
+
+
