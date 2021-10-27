@@ -55,16 +55,23 @@ fn detailed_countdown_message() -> String {
     let hours_left = Duration::hours(time_left.num_hours()) - weeks_left - days_left;
     let minutes_left = Duration::minutes(time_left.num_minutes()) - weeks_left - days_left - hours_left;
     let seconds_left = Duration::seconds(time_left.num_seconds()) - weeks_left - days_left - hours_left - minutes_left;
+    let milliseconds_left = Duration::milliseconds(time_left.num_milliseconds()) - weeks_left - days_left - hours_left - minutes_lef - seconds_left;
+    let microseconds_left = Duration::microseconds(time_left.num_microseconds().unwrap()) - weeks_left - days_left - hours_left - minutes_lef - seconds_left - milliseconds_left;
+    let nanoseconds_left = Duration::nanoseconds(time_left.num_nanoseconds().unwrap()) - weeks_left - days_left - hours_left - minutes_lef - seconds_left - milliseconds_left - microseconds_left;
     if time_left.num_weeks() > 0 {
-        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo! 🚀", weeks_left.num_weeks(), days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
+        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo! 🚀",
+                      weeks_left.num_weeks(), days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_days() > 0 {
-        msg = format!("There are {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!! 🚀", days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
+        msg = format!("There are {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!! 🚀",
+                      days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_hours() > 0 {
-        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
+        msg = format!("There are {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!!! 🚀",
+                      hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_minutes() > 0 {
-        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", minutes_left.num_minutes(), seconds_left.num_seconds());
+        msg = format!("There are {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!!! 🚀",
+                      minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_seconds() > 0 {
-        msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🚀", seconds_left.num_seconds());
+        msg = format!("Only {} nanoseconds to go until blastoff, kupo!!!!!!! 🚀", time_left.num_nanoseconds().unwrap());
     } else {
         msg = format!("Endwalker is here, kupo! 🎉🚀");
     }
