@@ -60,9 +60,9 @@ fn detailed_countdown_message() -> String {
     } else if time_left.num_days() > 2 {
         msg = format!("There are {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!! 🚀", days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
     } else if time_left.num_hours() > 1 {
-        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds()));
+        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
     } else if time_left.num_minutes() > 1 {
-        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", minutes_left.num_minutes(), seconds_left.num_seconds()));
+        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", minutes_left.num_minutes(), seconds_left.num_seconds());
     } else if time_left.num_seconds() > 1 {
         msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🚀", seconds_left.num_seconds());
     } else {
