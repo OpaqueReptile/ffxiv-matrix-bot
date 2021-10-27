@@ -50,16 +50,21 @@ fn detailed_countdown_message() -> String {
     let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
+    let weeks_left = Duration::weeks(time_left.num_weeks());
+    let days_left = Duration::days(time_left.num_days()) - weeks_left;
+    let hours_left = Duration::hours(time_left.num_hours()) - days_left;
+    let minutes_left = Duration::minutes(time_left.num_minutes()) - hours_left;
+    let seconds_left = Duration::seconds(time_left.num_seconds()) - minutes_left;
     if time_left.num_weeks() > 5 {
-        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo! 🚀", time_left.num_weeks(), time_left.num_days(), time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo! 🚀", weeks_left.num_weeks(), days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
     } else if time_left.num_days() > 2 {
-        msg = format!("There are {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!! 🚀", time_left.num_days(), time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+        msg = format!("There are {} days, {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!! 🚀", days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds());
     } else if time_left.num_hours() > 1 {
-        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", time_left.num_hours(), time_left.num_minutes(), time_left.num_seconds());
+        msg = format!("There are {} hours, {} minutes, and {} seconds until Endwalker early access, kupo!!! 🚀", hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds()));
     } else if time_left.num_minutes() > 1 {
-        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", time_left.num_minutes(), time_left.num_seconds());
+        msg = format!("There are {} minutes and {} seconds until Endwalker early access, kupo!!! 🚀", minutes_left.num_minutes(), seconds_left.num_seconds()));
     } else if time_left.num_seconds() > 1 {
-        msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🚀", time_left.num_seconds());
+        msg = format!("Only {} seconds to go until Endwalker, kupo!!!!!!! 🚀", seconds_left.num_seconds());
     } else {
         msg = format!("Endwalker is here, kupo! 🎉🚀");
     }
