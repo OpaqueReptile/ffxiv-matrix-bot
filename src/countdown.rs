@@ -26,7 +26,7 @@ use std::thread;
 
 fn countdown_message() -> String {
     let msg:String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
     if time_left.num_weeks() > 5 {
@@ -47,7 +47,7 @@ fn countdown_message() -> String {
 
 fn detailed_countdown_message() -> String {
     let msg:String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
     let weeks_left = Duration::weeks(time_left.num_weeks());
@@ -80,7 +80,7 @@ fn detailed_countdown_message() -> String {
 
 fn countdown_nano_message() -> String {
     let msg:String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 11, 19).and_hms(9, 0, 0);
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
     let time_left = target_dt - now_dt;
     msg = format!("Only {} nanoseconds to go until blastoff, kupo! 🚀", time_left.num_nanoseconds().unwrap());
