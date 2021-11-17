@@ -3,3 +3,4 @@
 /.idea/
 /clientsecret.json
 /botconfig.toml
+/tokencache.json

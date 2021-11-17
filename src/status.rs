@@ -300,7 +300,12 @@ pub fn status_message() -> String {
         None => {},
         Some(level) => {
             completed_level = level + LEVEL_FLOOR;
-            status = (status + format!("🎉 Everyone is done with level {} MSQ, so those spoilers are fine, kupo!\n\n", completed_level).as_str()).to_string();
+            if completed_level == LEVEL_FLOOR + 10{
+                status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str()).to_string();
+            }
+            else {
+                status = (status + format!("📣 Everyone is done with level {} MSQ, so those spoilers are fine, kupo!\n\n", completed_level).as_str()).to_string();
+            }
         },
     };
     match get_furthest_level(&rows) {
@@ -325,7 +330,7 @@ pub fn status_message() -> String {
     };
 
     if completed_level < LEVEL_FLOOR +10 {
-        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked hidden and marked appropriately, kupo!\n\n", completed_level+1).as_str()).to_string();
+        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked hidden and marked appropriately, kupo! 🤫\n\n", completed_level+1).as_str()).to_string();
     }
 
     status = (status + format!("🌕 Endwalker MSQ Tracker: https://inferiorlattice.com/ewtracker\n\n").as_str()).to_string();
