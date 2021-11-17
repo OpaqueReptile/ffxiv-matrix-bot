@@ -192,7 +192,7 @@ async fn get_status_rows() -> Vec<Row> {
     }
 }
 
-fn get_everyone_completed_level(rows :&Vec<Row>) -> Option<u32>{
+fn get_everyone_completed_level(rows :&Vec<Row>) -> Option<(u32, u32)>{
     let mut people_count = 0;
     let mut complete_count = vec![0; 11];
     for row in rows {
@@ -223,7 +223,7 @@ fn get_everyone_completed_level(rows :&Vec<Row>) -> Option<u32>{
     }
     match highest {
         -1 => None,
-        _ => Some(highest as u32)
+        _ => Some((highest as u32, people_count as u32))
     }
 }
 
@@ -298,13 +298,16 @@ pub fn status_message() -> String {
     let mut completed_level :u32 = LEVEL_FLOOR-1;
     match get_everyone_completed_level(&rows) {
         None => {},
-        Some(level) => {
+        Some((level, people)) => {
             completed_level = level + LEVEL_FLOOR;
             if completed_level == LEVEL_FLOOR + 10{
                 status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str()).to_string();
             }
-            else {
+            else if people > 0 {
                 status = (status + format!("📣 Everyone is done with level {} MSQ, so those spoilers are fine, kupo!\n\n", completed_level).as_str()).to_string();
+            }
+            else {
+                status = (status + format!("😢 I wasn't able to see anyone on the tracker, kupo...").as_str()).to_string();
             }
         },
     };
