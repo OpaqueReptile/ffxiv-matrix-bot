@@ -39,7 +39,7 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
         }
     };
     //get lodestone data
-    let mut character = api.character(CharacterId(id)).send();
+    let character = api.character(CharacterId(id)).send();
     println! {"{:#?}",character}
 
     HandleResult::StopHandling

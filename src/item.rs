@@ -17,7 +17,7 @@ extern crate serde_json;
 extern crate clap;
 extern crate inflector;
 
-use clap::{App, AppSettings, Arg, SubCommand};
+use clap::{App, AppSettings, Arg};
 use inflector::Inflector;
 
 //xivapi

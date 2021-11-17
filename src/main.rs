@@ -1,6 +1,10 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 extern crate matrix_bot_api;
 use matrix_bot_api::handlers::StatelessHandler;
 use matrix_bot_api::MatrixBot;
+
 
 extern crate fractal_matrix_api;
 
@@ -17,14 +21,25 @@ extern crate serde_json;
 //xivapi
 
 //load submodules
+mod countdown;
 mod item;
 mod party;
 mod random;
+mod status;
 mod util;
-mod countdown;
+
+
+fn main() {
+    main_bot();
+    //main_test();
+}
+
+fn main_test() {
+    print!("{}", status::status_message())
+}
 
 #[allow(unused_doc_comments)]
-fn main() {
+fn main_bot() {
     // ------- Getting the login-credentials from file -------
     // You can get them however you like: hard-code them here, env-variable,
     // tcp-connection, read from file, etc. Here, we use the config-crate to
@@ -43,7 +58,7 @@ fn main() {
     // Define all the handlers
     let handler = StatelessHandler::new();
 
-    /**
+    /*
     //test handlers
     handler.register_handle("shutdown", |bot, _, _| {
         bot.shutdown();
@@ -72,7 +87,7 @@ fn main() {
         );
         HandleResult::StopHandling
     });
-    **/
+    */
     let mut ffxiv_handle = StatelessHandler::new();
     ffxiv_handle.register_handle("item", item::get_item);
     ffxiv_handle.register_handle("marketboard", item::get_marketboard);
@@ -84,6 +99,8 @@ fn main() {
     ffxiv_handle.register_handle("countdown", countdown::countdown);
     ffxiv_handle.register_handle("countdown_nano", countdown::countdown_nano);
     ffxiv_handle.register_handle("countdown_loop", countdown::countdown_loop);
+    ffxiv_handle.register_handle("spoiler", status::status);
+    ffxiv_handle.register_handle("status", status::status);
 
     // -------------------------------------------------------
     // Start the bot

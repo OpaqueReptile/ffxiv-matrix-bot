@@ -1,3 +1,5 @@
 /target
 /botconfig
 /.idea/
+/clientsecret.json
+/botconfig.toml
