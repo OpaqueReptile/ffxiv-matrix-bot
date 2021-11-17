@@ -296,7 +296,8 @@ pub fn status_message() -> String {
     let rows = get_status_rows();
     let mut status = String::new();
     let mut completed_level :u32 = LEVEL_FLOOR-1;
-    match get_everyone_completed_level(&rows) {
+    let mut furthest_level :u32 = LEVEL_FLOOR-1;
+        match get_everyone_completed_level(&rows) {
         None => {},
         Some((level, people)) => {
             completed_level = level + LEVEL_FLOOR;
@@ -314,9 +315,10 @@ pub fn status_message() -> String {
     match get_furthest_level(&rows) {
         None => {},
         Some(people)  => {
-            status = (status + format!("🏃 Furthest along, completed level {} MSQ: \n ", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
+            furthest_level = people.level as u32;
+            status = (status + format!("🏃 Furthest along, completed level {} MSQ: \n", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
             for p in people.char_names{
-                status = (status + format!("{}\n ",p).as_str()).to_string();
+                status = (status + format!("\t• {}\n",p).as_str()).to_string();
             }
             status = (status + format!("\n").as_str()).to_string();
         },
@@ -324,11 +326,13 @@ pub fn status_message() -> String {
     match get_lowest_level(&rows) {
         None => {},
         Some(people)  => {
-            status = (status + format!("🐌 Taking their time, completed level {} MSQ: \n ", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
-            for p in people.char_names{
-                status = (status + format!("{}\n ",p).as_str()).to_string();
+            if furthest_level > people.level as u32{
+                status = (status + format!("🐌 Taking their time, completed level {} MSQ: \n", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
+                for p in people.char_names {
+                    status = (status + format!("\t• {}\n", p).as_str()).to_string();
+                }
+                status = (status + format!("\n").as_str()).to_string();
             }
-            status = (status + format!("\n").as_str()).to_string();
         },
     };
 
