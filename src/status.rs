@@ -7,9 +7,9 @@ extern crate google_sheets4 as sheets4;
 extern crate hyper;
 extern crate hyper_rustls;
 extern crate yup_oauth2 as oauth2;
+use self::sheets4::api::{CellData, ExtendedValue};
 use sheets4::Error;
 use sheets4::Sheets;
-use self::sheets4::api::{ExtendedValue, CellData, };
 
 //use std::fs::File;
 //use std::io::Write;
@@ -18,8 +18,9 @@ use self::sheets4::api::{ExtendedValue, CellData, };
 
 //xivapi
 
-static LEVEL_FLOOR:u32 = 80;
+static LEVEL_FLOOR: u32 = 80;
 
+#[derive(Clone)]
 enum MsqLevelStatus {
     MSQInProgress,
     WaitingOnTrial,
@@ -64,6 +65,7 @@ impl From<&MsqLevelStatus> for String {
     }
 }
 
+#[derive(Clone)]
 struct Row {
     char_name: String,
     statuses: Vec<MsqLevelStatus>,
@@ -85,8 +87,14 @@ impl Row {
                     Some(char_exval) => {
                         let char_string: String = char_exval.string_value.unwrap().to_string();
                         let status_cells: Vec<CellData> = cell_vec[1..].to_vec().clone();
-                        let status_exvals: Vec<ExtendedValue> = status_cells.into_iter().map(|cd| cd.effective_value.unwrap()).collect();
-                        let status_enums: Vec<MsqLevelStatus> = status_exvals.into_iter().map(|ex| ex.string_value.unwrap().as_str().into()).collect();
+                        let status_exvals: Vec<ExtendedValue> = status_cells
+                            .into_iter()
+                            .map(|cd| cd.effective_value.unwrap())
+                            .collect();
+                        let status_enums: Vec<MsqLevelStatus> = status_exvals
+                            .into_iter()
+                            .map(|ex| ex.string_value.unwrap().as_str().into())
+                            .collect();
                         Row {
                             char_name: char_string,
                             statuses: status_enums,
@@ -97,8 +105,8 @@ impl Row {
         }
     }
     pub fn highest_complete(&self) -> Option<u32> {
-        let mut highest :isize = -1;
-        for (i, status) in self.statuses.iter().enumerate(){
+        let mut highest: isize = -1;
+        for (i, status) in self.statuses.iter().enumerate() {
             if matches!(status, MsqLevelStatus::MSQComplete) {
                 highest = i as isize;
             }
@@ -106,23 +114,56 @@ impl Row {
         }
         match highest {
             -1 => None,
-            _ => Some(highest as u32)
+            _ => Some(highest as u32),
         }
     }
 
-    #[allow(dead_code)]
-    pub fn waiting_on_dungeon() -> Option<u32> {
-        None
+    pub fn highest_duty(&self) -> Option<(MsqLevelStatus, u32)> {
+        let mut duty = MsqLevelStatus::None;
+        let mut level = 0;
+        for (i, status) in self.statuses.iter().enumerate() {
+            if matches!(status, MsqLevelStatus::WaitingOnDungeon)
+                || matches!(status, MsqLevelStatus::WaitingOnTrial)
+            {
+                duty = status.clone();
+                level = i;
+            }
+            //println!("At {} highest is {} and status {:?}", i, highest, String::from(status));
+        }
+        match duty {
+            MsqLevelStatus::None => None,
+            _ => Some((duty, level as u32)),
+        }
     }
 
-    #[allow(dead_code)]
-    pub fn waiting_on_trial() -> Option<u32> {
-        None
+    pub fn highest_prog(&self) -> Option<(MsqLevelStatus, u32)> {
+        let mut duty = MsqLevelStatus::None;
+        let mut level = 0;
+        for (i, status) in self.statuses.iter().enumerate() {
+            if matches!(status, MsqLevelStatus::MSQInProgress) {
+                duty = status.clone();
+                level = i;
+            }
+            //println!("At {} highest is {} and status {:?}", i, highest, String::from(status));
+        }
+        match duty {
+            MsqLevelStatus::None => None,
+            _ => Some((duty, level as u32)),
+        }
     }
 }
 
+#[derive(Clone)]
 struct PeopleAtLevel {
     level: i32,
+    char_names: Vec<String>,
+    // ...
+}
+
+#[derive(Clone)]
+struct PeopleAtDuty {
+    level: Vec<i32>,
+    duty: Vec<MsqLevelStatus>,
     char_names: Vec<String>,
     // ...
 }
@@ -185,36 +226,50 @@ async fn get_status_rows() -> Vec<Row> {
             }
         },
         Ok(res) => {
-            let g = res.1.sheets.unwrap().pop().unwrap().data.unwrap().pop().unwrap();
-            let rows: Vec<Row> = g.row_data.unwrap().into_iter().map(|r| Row::from(r)).collect();
+            let g = res
+                .1
+                .sheets
+                .unwrap()
+                .pop()
+                .unwrap()
+                .data
+                .unwrap()
+                .pop()
+                .unwrap();
+            let rows: Vec<Row> = g
+                .row_data
+                .unwrap()
+                .into_iter()
+                .map(|r| Row::from(r))
+                .collect();
             rows
         }
     }
 }
 
-fn get_everyone_completed_level(rows :&Vec<Row>) -> Option<(u32, u32)>{
+fn get_everyone_completed_level(rows: &Vec<Row>) -> Option<(u32, u32)> {
     let mut people_count = 0;
     let mut complete_count = vec![0; 11];
     for row in rows {
-        if !row.char_name.is_empty(){
-            people_count+=1;
+        if !row.char_name.is_empty() {
+            people_count += 1;
             print!("Person: {} ", row.char_name);
-            match row.highest_complete(){
+            match row.highest_complete() {
                 Some(level) => {
                     print!("has completed levels: ");
                     for i in 0..=level {
                         complete_count[i as usize] += 1;
                         print!("{} ", i);
                     }
-                },
-                None => ()
+                }
+                None => (),
             }
             println!();
         }
     }
     println!("There are {} people", people_count);
     println!("Scores: {:?}", complete_count);
-    let mut highest : isize = -1;
+    let mut highest: isize = -1;
     for (i, count) in complete_count.iter().enumerate() {
         if *count as i32 == people_count as i32 {
             highest = i as isize;
@@ -223,54 +278,52 @@ fn get_everyone_completed_level(rows :&Vec<Row>) -> Option<(u32, u32)>{
     }
     match highest {
         -1 => None,
-        _ => Some((highest as u32, people_count as u32))
+        _ => Some((highest as u32, people_count as u32)),
     }
 }
 
-fn get_furthest_level(rows :&Vec<Row>) -> Option<PeopleAtLevel>{
-    let mut furthest =
-        PeopleAtLevel {
-            char_names: Vec::new(),
-            level: -1
-        };
+fn get_furthest_level(rows: &Vec<Row>) -> Option<PeopleAtLevel> {
+    let mut furthest = PeopleAtLevel {
+        char_names: Vec::new(),
+        level: -1,
+    };
     for row in rows {
-        if !row.char_name.is_empty(){
+        if !row.char_name.is_empty() {
             print!("Person: {} ", row.char_name);
-            match row.highest_complete(){
+            match row.highest_complete() {
                 Some(level) => {
-                    print!("has completed level {} ",level);
+                    print!("has completed level {} ", level);
                     if level as isize == furthest.level as isize {
                         furthest.char_names.push(row.char_name.clone());
                     }
-                    if level as isize > furthest.level as isize{
+                    if level as isize > furthest.level as isize {
                         furthest.level = level as i32;
                         furthest.char_names.clear();
                         furthest.char_names.push(row.char_name.clone());
                     }
-                },
-                None => ()
+                }
+                None => (),
             }
             println!();
         }
     }
     match furthest.level {
         -1 => None,
-        _ => Some(furthest)
+        _ => Some(furthest),
     }
 }
 
-fn get_lowest_level(rows :&Vec<Row>) -> Option<PeopleAtLevel>{
-    let mut slowest =
-        PeopleAtLevel {
-            char_names: Vec::new(),
-            level: 10
-        };
+fn get_lowest_level(rows: &Vec<Row>) -> Option<PeopleAtLevel> {
+    let mut slowest = PeopleAtLevel {
+        char_names: Vec::new(),
+        level: 10,
+    };
     for row in rows {
-        if !row.char_name.is_empty(){
+        if !row.char_name.is_empty() {
             print!("Person: {} ", row.char_name);
-            match row.highest_complete(){
+            match row.highest_complete() {
                 Some(level) => {
-                    print!("has completed level {} ",level);
+                    print!("has completed level {} ", level);
                     if level as isize == slowest.level as isize {
                         slowest.char_names.push(row.char_name.clone());
                     }
@@ -279,68 +332,197 @@ fn get_lowest_level(rows :&Vec<Row>) -> Option<PeopleAtLevel>{
                         slowest.char_names.clear();
                         slowest.char_names.push(row.char_name.clone());
                     }
-                },
-                None => ()
+                }
+                None => (),
             }
             println!();
         }
     }
     match slowest.level {
         10 => None,
-        _ => Some(slowest)
+        _ => Some(slowest),
     }
 }
 
+fn get_duty(rows: &Vec<Row>) -> Option<PeopleAtDuty> {
+    let mut info = PeopleAtDuty {
+        level: Vec::new(),
+        duty: Vec::new(),
+        char_names: Vec::new(),
+    };
+    for row in rows {
+        if !row.char_name.is_empty() {
+            print!("Duty: {} ", row.char_name);
+            match row.highest_duty() {
+                Some((duty, level)) => {
+                    print!("is at a level {} {:?} ", level, String::from(&duty));
+                    info.level.push(level as i32);
+                    info.duty.push(duty.clone());
+                    info.char_names.push(row.char_name.clone());
+                }
+                None => (),
+            }
+            println!();
+        }
+    }
+    match info.char_names.len() {
+        0 => None,
+        _ => Some(info),
+    }
+}
+
+fn get_prog(rows: &Vec<Row>) -> Option<PeopleAtDuty> {
+    let mut info = PeopleAtDuty {
+        level: Vec::new(),
+        duty: Vec::new(),
+        char_names: Vec::new(),
+    };
+    for row in rows {
+        if !row.char_name.is_empty() {
+            print!("Duty: {} ", row.char_name);
+            match row.highest_prog() {
+                Some((duty, level)) => {
+                    print!("is level {} {} ", level, String::from(&duty));
+                    info.level.push(level as i32);
+                    info.duty.push(duty.clone());
+                    info.char_names.push(row.char_name.clone());
+                }
+                None => (),
+            }
+            println!();
+        }
+    }
+    match info.char_names.len() {
+        0 => None,
+        _ => Some(info),
+    }
+}
 
 pub fn status_message() -> String {
     let rows = get_status_rows();
     let mut status = String::new();
-    let mut completed_level :u32 = LEVEL_FLOOR-1;
-    let mut furthest_level :u32 = LEVEL_FLOOR-1;
-        match get_everyone_completed_level(&rows) {
-        None => {},
+    let mut completed_level: u32 = LEVEL_FLOOR - 1;
+    let mut furthest_level: u32 = LEVEL_FLOOR - 1;
+    match get_everyone_completed_level(&rows) {
+        None => {}
         Some((level, people)) => {
             completed_level = level + LEVEL_FLOOR;
-            if completed_level == LEVEL_FLOOR + 10{
-                status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str()).to_string();
-            }
-            else if people > 0 {
+            if completed_level == LEVEL_FLOOR + 10 {
+                status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str())
+                    .to_string();
+            } else if people > 0 {
                 status = (status + format!("📣 Everyone is done with level {} MSQ, so those spoilers are fine, kupo!\n\n", completed_level).as_str()).to_string();
+            } else {
+                status = (status
+                    + format!("😢 I wasn't able to see anyone on the tracker, kupo...").as_str())
+                .to_string();
             }
-            else {
-                status = (status + format!("😢 I wasn't able to see anyone on the tracker, kupo...").as_str()).to_string();
-            }
-        },
+        }
     };
     match get_furthest_level(&rows) {
-        None => {},
-        Some(people)  => {
+        None => {}
+        Some(people) => {
             furthest_level = people.level as u32;
-            status = (status + format!("🏃 Furthest along, completed level {} MSQ: \n", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
-            for p in people.char_names{
-                status = (status + format!("\t• {}\n",p).as_str()).to_string();
+            status = (status
+                + format!(
+                    "🏃 Furthest along, completed level {} MSQ:\n",
+                    people.level + LEVEL_FLOOR as i32
+                )
+                .as_str())
+            .to_string();
+            for p in people.char_names {
+                status = (status + format!("\t• {}\n", p).as_str()).to_string();
             }
             status = (status + format!("\n").as_str()).to_string();
-        },
+        }
     };
     match get_lowest_level(&rows) {
-        None => {},
-        Some(people)  => {
-            if furthest_level > people.level as u32{
-                status = (status + format!("🐌 Taking their time, completed level {} MSQ: \n", people.level + LEVEL_FLOOR as i32).as_str()).to_string();
+        None => {}
+        Some(people) => {
+            if furthest_level > people.level as u32 {
+                status = (status
+                    + format!(
+                        "🐌 Taking their time, completed level {} MSQ:\n",
+                        people.level + LEVEL_FLOOR as i32
+                    )
+                    .as_str())
+                .to_string();
                 for p in people.char_names {
                     status = (status + format!("\t• {}\n", p).as_str()).to_string();
                 }
                 status = (status + format!("\n").as_str()).to_string();
             }
-        },
+        }
     };
 
-    if completed_level < LEVEL_FLOOR +10 {
+    match get_duty(&rows) {
+        None => {}
+        Some(duty_info) => {
+            status = (status
+                + format!(
+                    "⌛ {} Queuing for duties:\n",
+                    duty_info.char_names.len() as i32
+                )
+                .as_str())
+            .to_string();
+            for (i, p) in duty_info.char_names.iter().enumerate() {
+                let mut duty_msg = "";
+                if matches!(duty_info.duty[i], MsqLevelStatus::WaitingOnDungeon) {
+                    duty_msg = "dungeon"
+                }
+                if matches!(duty_info.duty[i], MsqLevelStatus::WaitingOnTrial) {
+                    duty_msg = "trial"
+                }
+                status = (status
+                    + format!(
+                        "\t• {} is at a level {} {}\n",
+                        p,
+                        duty_info.level[i] + LEVEL_FLOOR as i32,
+                        duty_msg
+                    )
+                    .as_str())
+                .to_string();
+            }
+            status = (status + format!("\n").as_str()).to_string();
+        }
+    };
+
+    match get_prog(&rows) {
+        None => {}
+        Some(duty_info) => {
+            status = (status
+                + format!(
+                    "🚀 {} Progressing the MSQ:\n",
+                    duty_info.char_names.len() as i32
+                )
+                .as_str())
+            .to_string();
+            for (i, p) in duty_info.char_names.iter().enumerate() {
+                let mut duty_msg = "";
+                if matches!(duty_info.duty[i], MsqLevelStatus::MSQInProgress) {
+                    duty_msg = "MSQ"
+                }
+                status = (status
+                    + format!(
+                        "\t• {} is working on level {} {}\n",
+                        p,
+                        duty_info.level[i] + LEVEL_FLOOR as i32,
+                        duty_msg
+                    )
+                    .as_str())
+                .to_string();
+            }
+            status = (status + format!("\n").as_str()).to_string();
+        }
+    };
+
+    if completed_level < LEVEL_FLOOR + 10 {
         status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked hidden and marked appropriately, kupo! 🤫\n\n", completed_level+1).as_str()).to_string();
     }
 
-    status = (status + format!("🌕 Endwalker MSQ Tracker: https://inferiorlattice.com/ewtracker\n\n").as_str()).to_string();
+    status = (status
+        + format!("🌕 Endwalker MSQ Tracker: https://inferiorlattice.com/ewtracker\n\n").as_str())
+    .to_string();
 
     status.clone()
 }

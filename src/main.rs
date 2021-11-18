@@ -5,7 +5,6 @@ extern crate matrix_bot_api;
 use matrix_bot_api::handlers::StatelessHandler;
 use matrix_bot_api::MatrixBot;
 
-
 extern crate fractal_matrix_api;
 
 extern crate reqwest;
@@ -27,7 +26,6 @@ mod party;
 mod random;
 mod status;
 mod util;
-
 
 fn main() {
     main_bot();
