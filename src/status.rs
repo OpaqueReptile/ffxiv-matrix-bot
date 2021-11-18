@@ -407,7 +407,7 @@ pub fn status_message() -> String {
         None => {}
         Some((level, people)) => {
             completed_level = level + LEVEL_FLOOR;
-            if completed_level == LEVEL_FLOOR + 10 {
+            if level == 10 {
                 status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str())
                     .to_string();
             } else if people > 0 {
@@ -517,7 +517,7 @@ pub fn status_message() -> String {
     };
 
     if completed_level < LEVEL_FLOOR + 10 {
-        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked hidden and marked appropriately, kupo! 🤫\n\n", completed_level+1).as_str()).to_string();
+        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked and hidden appropriately, kupo! 🤫\n\n", completed_level+1).as_str()).to_string();
     }
 
     status = (status
