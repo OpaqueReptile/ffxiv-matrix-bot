@@ -99,6 +99,7 @@ fn main_bot() {
     ffxiv_handle.register_handle("countdown_loop", countdown::countdown_loop);
     ffxiv_handle.register_handle("spoiler", status::status);
     ffxiv_handle.register_handle("status", status::status);
+    ffxiv_handle.register_handle("status_loop", status::status_loop);
 
     // -------------------------------------------------------
     // Start the bot

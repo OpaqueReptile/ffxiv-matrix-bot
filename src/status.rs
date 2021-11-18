@@ -10,6 +10,7 @@ extern crate yup_oauth2 as oauth2;
 use self::sheets4::api::{CellData, ExtendedValue};
 use sheets4::Error;
 use sheets4::Sheets;
+use std::thread;
 
 //use std::fs::File;
 //use std::io::Write;
@@ -525,6 +526,22 @@ pub fn status_message() -> String {
     .to_string();
 
     status.clone()
+}
+
+#[allow(unreachable_code)]
+pub(crate) fn status_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
+    let room = &message.room;
+    let mut t0 = String::from("");
+    loop {
+        let now = status_message().clone();
+        if t0.as_str().ne(now.as_str()) {
+            bot.send_message(&status_message(), room, MessageType::TextMessage);
+            t0 = status_message().clone();
+        }
+        println!("{}", status_message().as_str());
+        thread::sleep(std::time::Duration::from_millis(120_000)); // sleep 120s
+    }
+    HandleResult::StopHandling
 }
 
 pub(crate) fn status(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
