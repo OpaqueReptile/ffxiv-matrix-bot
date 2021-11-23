@@ -171,11 +171,6 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
             "Only {} minutes to go until blastoff, kupo! 🚀",
             time_left.num_minutes()
         );
-    } else if cmd.to_string().contains("sec") {
-        msg = format!(
-            "Only {} seconds to go until blastoff, kupo! 🚀",
-            time_left.num_seconds()
-        );
     } else if cmd.to_string().contains("mil") {
         msg = format!(
             "Only {} milliseconds to go until blastoff, kupo! 🚀",
@@ -190,6 +185,11 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
         msg = format!(
             "Only {} nanoseconds to go until blastoff, kupo! 🚀",
             time_left.num_nanoseconds().unwrap()
+        );
+    } else if cmd.to_string().contains("sec") {
+        msg = format!(
+            "Only {} seconds to go until blastoff, kupo! 🚀",
+            time_left.num_seconds()
         );
     } else {
         msg = format!(
