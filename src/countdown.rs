@@ -23,11 +23,10 @@ use std::thread;
 
 //xivapi
 
-fn countdown_message() -> String {
+fn countdown_message(target_dt: &DateTime<Utc>) -> String {
     let msg: String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
-    let time_left = target_dt - now_dt;
+    let time_left = *target_dt - now_dt;
     if time_left.num_weeks() > 5 {
         msg = format!(
             "There are {} weeks until Endwalker early access, kupo!",
@@ -59,11 +58,10 @@ fn countdown_message() -> String {
     msg
 }
 
-fn detailed_countdown_message() -> String {
+fn detailed_countdown_message(target_dt: &DateTime<Utc>) -> String {
     let msg: String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let now_dt: DateTime<Utc> = Utc::now();
-    let time_left = target_dt - now_dt;
+    let time_left = *target_dt - now_dt;
     let weeks_left = Duration::weeks(time_left.num_weeks());
     let days_left = Duration::days(time_left.num_days()) - weeks_left;
     let hours_left = Duration::hours(time_left.num_hours()) - weeks_left - days_left;
@@ -118,78 +116,89 @@ fn detailed_countdown_message() -> String {
     msg
 }
 
-fn countdown_nano_message() -> String {
-    let msg: String;
-    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
-    let now_dt: DateTime<Utc> = Utc::now();
-    let time_left = target_dt - now_dt;
-    msg = format!(
-        "Only {} nanoseconds to go until blastoff, kupo! 🚀",
-        time_left.num_nanoseconds().unwrap()
-    );
-    msg
-}
-
 #[allow(unreachable_code)]
 pub(crate) fn countdown_loop(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
     let mut t0 = String::from("");
     loop {
-        let now = countdown_message().clone();
+        let now = countdown_message(&target_dt).clone();
         if t0.as_str().ne(now.as_str()) {
-            bot.send_message(&countdown_message(), room, MessageType::RoomNotice);
-            t0 = countdown_message().clone();
+            bot.send_message(
+                &countdown_message(&target_dt),
+                room,
+                MessageType::RoomNotice,
+            );
+            t0 = countdown_message(&target_dt).clone();
         }
-        println!("{}", countdown_message().as_str());
+        println!("{}", countdown_message(&target_dt).as_str());
         thread::sleep(std::time::Duration::from_millis(15_000)); // sleep 15s
     }
     HandleResult::StopHandling
 }
 
-pub(crate) fn countdown_nano(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
-    let room = &message.room;
-    //let mut msg:String;
-    //let cmd_split = cmd.split_whitespace();
-    //for target_str in cmd_split {
-    //match target_str.parse::<u32>() {
-    //Ok(target_epoch) => {
-    //let target_dt = Utc.timestamp(target_epoch, 0);
-
-    bot.send_message(&countdown_nano_message(), room, MessageType::RoomNotice);
-    /* }
-        Err(_) => {
-            bot.send_message(
-                &format!("{} is not a valid unix epoch time, kupo!", dice),
-                room,
-                MessageType::RoomNotice,
-            );
-            return HandleResult::StopHandling;
-        }
-    };*/
-    // }
-    HandleResult::StopHandling
-}
-
 pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
     let room = &message.room;
-    //let mut msg:String;
-    //let cmd_split = cmd.split_whitespace();
-    //for target_str in cmd_split {
-    //match target_str.parse::<u32>() {
-    //Ok(target_epoch) => {
-    //let target_dt = Utc.timestamp(target_epoch, 0);
-
-    bot.send_message(&detailed_countdown_message(), room, MessageType::RoomNotice);
-    /* }
-        Err(_) => {
-            bot.send_message(
-                &format!("{} is not a valid unix epoch time, kupo!", dice),
-                room,
-                MessageType::RoomNotice,
-            );
-            return HandleResult::StopHandling;
-        }
-    };*/
-    // }
+    let target_dt: DateTime<Utc> = Utc.ymd(2021, 12, 3).and_hms(9, 0, 0);
+    let msg: String;
+    let now_dt: DateTime<Utc> = Utc::now();
+    let time_left = target_dt - now_dt;
+    if cmd
+        .to_string()
+        .trim_start_matches(" ")
+        .trim_end_matches(" ")
+        .len()
+        == 0
+    {
+        msg = detailed_countdown_message(&target_dt);
+    } else if cmd.to_string().contains("week") {
+        msg = format!(
+            "Only {} weeks to go until blastoff, kupo! 🚀",
+            time_left.num_weeks()
+        );
+    } else if cmd.to_string().contains("day") {
+        msg = format!(
+            "Only {} days to go until blastoff, kupo! 🚀",
+            time_left.num_days()
+        );
+    } else if cmd.to_string().contains("hour") {
+        msg = format!(
+            "Only {} hours to go until blastoff, kupo! 🚀",
+            time_left.num_hours()
+        );
+    } else if cmd.to_string().contains("min") {
+        msg = format!(
+            "Only {} minutes to go until blastoff, kupo! 🚀",
+            time_left.num_minutes()
+        );
+    } else if cmd.to_string().contains("sec") {
+        msg = format!(
+            "Only {} seconds to go until blastoff, kupo! 🚀",
+            time_left.num_seconds()
+        );
+    } else if cmd.to_string().contains("mil") {
+        msg = format!(
+            "Only {} milliseconds to go until blastoff, kupo! 🚀",
+            time_left.num_milliseconds()
+        );
+    } else if cmd.to_string().contains("mic") {
+        msg = format!(
+            "Only {} microseconds to go until blastoff, kupo! 🚀",
+            time_left.num_microseconds().unwrap()
+        );
+    } else if cmd.to_string().contains("nan") {
+        msg = format!(
+            "Only {} nanoseconds to go until blastoff, kupo! 🚀",
+            time_left.num_nanoseconds().unwrap()
+        );
+    } else {
+        msg = format!(
+            "Not sure what the heck you mean by \"{}\", kupo!",
+            cmd.to_string()
+                .trim_start_matches(" ")
+                .trim_end_matches(" ")
+        );
+    }
+    bot.send_message(&msg, room, MessageType::RoomNotice);
     HandleResult::StopHandling
 }

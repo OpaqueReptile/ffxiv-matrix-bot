@@ -95,7 +95,7 @@ fn main_bot() {
     ffxiv_handle.register_handle("help", random::roll_help);
     ffxiv_handle.register_handle("register", party::register_character);
     ffxiv_handle.register_handle("countdown", countdown::countdown);
-    ffxiv_handle.register_handle("countdown_nano", countdown::countdown_nano);
+    //ffxiv_handle.register_handle("countdown_nano", countdown::countdown_nano);
     ffxiv_handle.register_handle("countdown_loop", countdown::countdown_loop);
     ffxiv_handle.register_handle("spoiler", status::status);
     ffxiv_handle.register_handle("status", status::status);
