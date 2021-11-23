@@ -408,7 +408,12 @@ pub fn status_message() -> String {
         None => {}
         Some((level, people)) => {
             completed_level = level + LEVEL_FLOOR;
-            if level == 10 {
+            if people == 0 {
+                status = (status
+                    + format!("Hmm, small hiccup with the tracker, kupo!\n\n").as_str())
+                .to_string();
+                completed_level = LEVEL_FLOOR;
+            } else if level == 10 {
                 status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str())
                     .to_string();
             } else if people > 0 {
