@@ -151,42 +151,42 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
         == 0
     {
         msg = detailed_countdown_message(&target_dt);
-    } else if cmd.to_string().contains("week") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("week") {
         msg = format!(
             "Only {} weeks to go until blastoff, kupo! 🚀",
             time_left.num_weeks()
         );
-    } else if cmd.to_string().contains("day") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("day") {
         msg = format!(
             "Only {} days to go until blastoff, kupo! 🚀",
             time_left.num_days()
         );
-    } else if cmd.to_string().contains("hour") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("hour") {
         msg = format!(
             "Only {} hours to go until blastoff, kupo! 🚀",
             time_left.num_hours()
         );
-    } else if cmd.to_string().contains("min") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("min") {
         msg = format!(
             "Only {} minutes to go until blastoff, kupo! 🚀",
             time_left.num_minutes()
         );
-    } else if cmd.to_string().contains("mil") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("mil") {
         msg = format!(
             "Only {} milliseconds to go until blastoff, kupo! 🚀",
             time_left.num_milliseconds()
         );
-    } else if cmd.to_string().contains("mic") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("mic") {
         msg = format!(
             "Only {} microseconds to go until blastoff, kupo! 🚀",
             time_left.num_microseconds().unwrap()
         );
-    } else if cmd.to_string().contains("nan") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("nan") {
         msg = format!(
             "Only {} nanoseconds to go until blastoff, kupo! 🚀",
             time_left.num_nanoseconds().unwrap()
         );
-    } else if cmd.to_string().contains("sec") {
+    } else if cmd.to_string().trim_start_matches(" ").starts_with("sec") {
         msg = format!(
             "Only {} seconds to go until blastoff, kupo! 🚀",
             time_left.num_seconds()
