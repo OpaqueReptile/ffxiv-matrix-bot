@@ -407,7 +407,7 @@ pub fn status_message() -> String {
     match get_everyone_completed_level(&rows) {
         None => {}
         Some((level, people)) => {
-            completed_level = level + LEVEL_FLOOR;
+            completed_level = level + LEVEL_FLOOR - 1;
             if people == 0 {
                 status = (status
                     + format!("Hmm, small hiccup with the tracker, kupo!\n\n").as_str())
