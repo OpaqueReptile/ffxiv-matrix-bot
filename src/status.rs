@@ -412,7 +412,7 @@ pub fn status_message() -> String {
                 status = (status
                     + format!("Hmm, small hiccup with the tracker, kupo!\n\n").as_str())
                 .to_string();
-                completed_level = LEVEL_FLOOR;
+                completed_level = 999;
             } else if level == 10 {
                 status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str())
                     .to_string();
