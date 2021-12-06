@@ -86,19 +86,29 @@ impl Row {
                 match char_cell.effective_value {
                     None => nullrow,
                     Some(char_exval) => {
-                        let char_string: String = char_exval.string_value.unwrap().to_string();
-                        let status_cells: Vec<CellData> = cell_vec[1..].to_vec().clone();
-                        let status_exvals: Vec<ExtendedValue> = status_cells
-                            .into_iter()
-                            .map(|cd| cd.effective_value.unwrap())
-                            .collect();
-                        let status_enums: Vec<MsqLevelStatus> = status_exvals
-                            .into_iter()
-                            .map(|ex| ex.string_value.unwrap().as_str().into())
-                            .collect();
-                        Row {
-                            char_name: char_string,
-                            statuses: status_enums,
+                        let char_string: String = match char_exval.string_value {
+                            Some(somestring) => somestring.to_string(),
+                            None => "".to_string()
+                        };
+                        if char_string.len() > 0 {
+                            let status_cells: Vec<CellData> = cell_vec[1..].to_vec().clone();
+                            let status_exvals: Vec<ExtendedValue> = status_cells
+                                .into_iter()
+                                .map(|cd| cd.effective_value.unwrap())
+                                .collect();
+                            let status_enums: Vec<MsqLevelStatus> = status_exvals
+                                .into_iter()
+                                .map(|ex| ex.string_value.unwrap().as_str().into())
+                                .collect();
+                            Row {
+                                char_name: char_string,
+                                statuses: status_enums,
+                            }
+                        } else {
+                            Row {
+                                char_name: char_string,
+                                statuses: Vec::new(),
+                            }
                         }
                     }
                 }
