@@ -29,31 +29,31 @@ fn countdown_message(target_dt: &DateTime<Utc>) -> String {
     let time_left = *target_dt - now_dt;
     if time_left.num_weeks() > 5 {
         msg = format!(
-            "There are {} weeks until Endwalker early access, kupo!",
+            "There are {} weeks until Endwalker early access, HumHumHumm🎶",
             time_left.num_weeks()
         );
     } else if time_left.num_days() > 2 {
         msg = format!(
-            "There are {} days until Endwalker early access, kupo!!",
+            "There are {} days until Endwalker early access, HumHumHumm🎶!",
             time_left.num_days()
         );
     } else if time_left.num_hours() > 1 {
         msg = format!(
-            "There are {} hours until Endwalker early access, kupo!!!",
+            "There are {} hours until Endwalker early access, HumHumHumm🎶!!",
             time_left.num_hours()
         );
     } else if time_left.num_minutes() > 1 {
         msg = format!(
-            "There are {} minutes until Endwalker early access, kupo!!! 🌕👀",
+            "There are {} minutes until Endwalker early access, HumHumHumm🎶!! 🌕👀",
             time_left.num_minutes()
         );
     } else if time_left.num_seconds() > 1 {
         msg = format!(
-            "Only {} seconds to go until Endwalker, kupo!!!!!!! 🌕👀",
+            "Only {} seconds to go until Endwalker, HumHumHumm🎶!!!!!! 🌕👀",
             time_left.num_seconds()
         );
     } else {
-        msg = format!("Endwalker is here, kupo! 🎉");
+        msg = format!("Endwalker is here, HumHumHumm🎶 🎉");
     }
     msg
 }
@@ -94,24 +94,24 @@ fn detailed_countdown_message(target_dt: &DateTime<Utc>) -> String {
         - milliseconds_left
         - microseconds_left;
     if time_left.num_weeks() > 0 {
-        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo! 🚀",
+        msg = format!("There are {} weeks, {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, HumHumHumm🎶 🚀",
                       weeks_left.num_weeks(), days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_days() > 0 {
-        msg = format!("There are {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!! 🚀",
+        msg = format!("There are {} days, {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, HumHumHumm🎶! 🚀",
                       days_left.num_days(), hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_hours() > 0 {
-        msg = format!("There are {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!!! 🚀",
+        msg = format!("There are {} hours, {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, HumHumHumm🎶!! 🚀",
                       hours_left.num_hours(), minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_minutes() > 0 {
-        msg = format!("There are {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, kupo!!! 🚀",
+        msg = format!("There are {} minutes, {} seconds, {} milliseconds, {} microseconds, and {} nanoseconds until blastoff, HumHumHumm🎶!! 🚀",
                       minutes_left.num_minutes(), seconds_left.num_seconds(), milliseconds_left.num_milliseconds(), microseconds_left.num_microseconds().unwrap(), nanoseconds_left.num_nanoseconds().unwrap());
     } else if time_left.num_seconds() > 0 {
         msg = format!(
-            "Only {} nanoseconds to go until blastoff, kupo!!!!!!! 🚀",
+            "Only {} nanoseconds to go until blastoff, HumHumHumm🎶!!!!!! 🚀",
             time_left.num_nanoseconds().unwrap()
         );
     } else {
-        msg = format!("Endwalker is here, kupo! 🎉🚀");
+        msg = format!("Endwalker is here, HumHumHumm🎶 🎉🚀");
     }
     msg
 }
@@ -153,47 +153,47 @@ pub(crate) fn countdown(bot: &ActiveBot, message: &Message, cmd: &str) -> Handle
         msg = detailed_countdown_message(&target_dt);
     } else if cmd.to_string().trim_start_matches(" ").starts_with("week") {
         msg = format!(
-            "Only {} weeks to go until blastoff, kupo! 🚀",
+            "Only {} weeks to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_weeks()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("day") {
         msg = format!(
-            "Only {} days to go until blastoff, kupo! 🚀",
+            "Only {} days to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_days()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("hour") {
         msg = format!(
-            "Only {} hours to go until blastoff, kupo! 🚀",
+            "Only {} hours to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_hours()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("min") {
         msg = format!(
-            "Only {} minutes to go until blastoff, kupo! 🚀",
+            "Only {} minutes to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_minutes()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("mil") {
         msg = format!(
-            "Only {} milliseconds to go until blastoff, kupo! 🚀",
+            "Only {} milliseconds to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_milliseconds()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("mic") {
         msg = format!(
-            "Only {} microseconds to go until blastoff, kupo! 🚀",
+            "Only {} microseconds to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_microseconds().unwrap()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("nan") {
         msg = format!(
-            "Only {} nanoseconds to go until blastoff, kupo! 🚀",
+            "Only {} nanoseconds to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_nanoseconds().unwrap()
         );
     } else if cmd.to_string().trim_start_matches(" ").starts_with("sec") {
         msg = format!(
-            "Only {} seconds to go until blastoff, kupo! 🚀",
+            "Only {} seconds to go until blastoff, HumHumHumm🎶 🚀",
             time_left.num_seconds()
         );
     } else {
         msg = format!(
-            "Not sure what the heck you mean by \"{}\", kupo!",
+            "Not sure what the heck you mean by \"{}\", HumHumHumm🎶",
             cmd.to_string()
                 .trim_start_matches(" ")
                 .trim_end_matches(" ")

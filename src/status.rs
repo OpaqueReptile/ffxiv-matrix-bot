@@ -420,17 +420,17 @@ pub fn status_message() -> String {
             completed_level = level + LEVEL_FLOOR;
             if people == 0 {
                 status = (status
-                    + format!("Hmm, small hiccup with the tracker, kupo!\n\n").as_str())
+                    + format!("Hmm, small hiccup with the tracker, HumHumHumm🎶\n\n").as_str())
                 .to_string();
                 completed_level = 999;
             } else if level == 10 {
-                status = (status + format!("🎉 Everyone is done with the MSQ, kupo!\n\n").as_str())
+                status = (status + format!("🎉 Everyone is done with the MSQ, HumHumHumm🎶\n\n").as_str())
                     .to_string();
             } else if people > 0 {
-                status = (status + format!("📣 Everyone is done with level {} MSQ, so those spoilers are fine, kupo!\n\n", completed_level).as_str()).to_string();
+                status = (status + format!("📣 Everyone is done with level {} MSQ, so those spoilers are fine, HumHumHumm🎶\n\n", completed_level).as_str()).to_string();
             } else {
                 status = (status
-                    + format!("😢 I wasn't able to see anyone on the tracker, kupo...").as_str())
+                    + format!("😢 I wasn't able to see anyone on the tracker, Humm...").as_str())
                 .to_string();
             }
         }
@@ -533,7 +533,7 @@ pub fn status_message() -> String {
     };
 
     if completed_level < LEVEL_FLOOR + 10 {
-        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked and hidden appropriately, kupo! 🤫\n\n", completed_level+1).as_str()).to_string();
+        status = (status + format!("🤐 Please make sure any MSQ spoilers level {} or higher are marked and hidden appropriately, HumHumHumm🎶 🤫\n\n", completed_level+1).as_str()).to_string();
     }
 
     status = (status

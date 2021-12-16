@@ -127,7 +127,7 @@ pub fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
             }
 
             //Bulid the final message, formatted and unformatted
-            let greeting = format!("Found it, kupo!");
+            let greeting = format!("Found it, HumHumHumm🎶");
             let final_msg = format!("{}\n\n{}\n\n{}", greeting, name, info_msg);
             let final_html_msg = format!(
                 "{}<br><br>{}<br><br>{}",
@@ -139,7 +139,7 @@ pub fn get_item(bot: &ActiveBot, message: &Message, cmd: &str) -> HandleResult {
         }
         Err(_) => bot.send_message(
             &format!(
-                "Unable to find an item called {}, kupo!",
+                "Unable to find an item called {}, HumHumHumm🎶",
                 cmd.to_string()
                     .trim_start_matches(" ")
                     .trim_end_matches(" ")
@@ -298,7 +298,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                     }
 
                                     let greeting = format!(
-                                        "Here's the {} market info for {}, kupo!",
+                                        "Here's the {} market info for {}, HumHumHumm🎶",
                                         data_center, name
                                     );
                                     let final_msg =
@@ -318,7 +318,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                                 }
                                 Err(_) => bot.send_message(
                                     &format!(
-                                        "Doesn't look like {} is for sale, kupo!",
+                                        "Doesn't look like {} is for sale, HumHumHumm🎶",
                                         name.to_string()
                                     ),
                                     room,
@@ -331,7 +331,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
                 }
                 Err(_) => bot.send_message(
                     &format!(
-                        "Unable to find an item called {}, kupo!",
+                        "Unable to find an item called {}, HumHumHumm🎶",
                         item_vec.join(" ").to_string()
                     ),
                     room,
@@ -340,7 +340,7 @@ pub(crate) fn get_marketboard(bot: &ActiveBot, message: &Message, cmd: &str) -> 
             };
         }
         Err(_) => bot.send_message(
-            &format!("I'm confused, kupo!"),
+            &format!("I'm confused, HumHumHumm🎶"),
             room,
             MessageType::TextMessage,
         ),

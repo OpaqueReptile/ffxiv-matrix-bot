@@ -26,7 +26,7 @@ pub fn register_character(bot: &ActiveBot, message: &Message, cmd: &str) -> Hand
         Err(e) => {
             bot.send_message(
                 &format!(
-                    "{} is an invalid character ID, kupo!",
+                    "{} is an invalid character ID, HumHumHumm🎶",
                     cmd.to_string()
                         .trim_start_matches(" ")
                         .trim_end_matches(" ")
